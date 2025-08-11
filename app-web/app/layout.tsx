@@ -14,11 +14,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Wyly",
-  description: "画像とテキストを投稿・シェアするソーシャルプラットフォーム",
+  description: "野生生物の写真や観察情報、出会いの感動を共有するプラットフォーム",
   manifest: "/manifest.json",
   openGraph: {
     title: "Wyly",
-    description: "画像とテキストを投稿・シェアするソーシャルプラットフォーム",
+    description: "野生生物の写真や観察情報、出会いの感動を共有するプラットフォーム",
     url: "https://wyly.app",
     siteName: "Wyly",
     locale: "ja_JP",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Wyly",
-    description: "画像とテキストを投稿・シェアするソーシャルプラットフォーム",
+    description: "野生生物の写真や観察情報、出会いの感動を共有するプラットフォーム",
   },
 };
 

@@ -1,7 +1,7 @@
 {
   "name": "Wyly",
   "short_name": "Wyly",
-  "description": "画像とテキストを投稿・シェアするソーシャルプラットフォーム",
+  "description": "野生生物の写真や観察情報、出会いの感動を共有するプラットフォーム",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
