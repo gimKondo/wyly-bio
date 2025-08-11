@@ -1,2 +1,10 @@
-.sow/
+# IDEとエディタ設定
 *.code-workspace
+.vscode/
+
+# AI開発ツール設定
+.claude/
+.serena/
+
+# プロジェクトドキュメント（公開不要）
+.sow/
