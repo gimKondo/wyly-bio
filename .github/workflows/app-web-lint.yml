@@ -1,13 +1,7 @@
 name: app-web lint
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'app-web/**'
-      - '.github/workflows/app-web-lint.yml'
   pull_request:
-    branches: [ main ]
     paths:
       - 'app-web/**'
       - '.github/workflows/app-web-lint.yml'
