@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Card } from "@/components/ui/card";
+import { Card } from '@/components/ui/card';
 
 interface ColorInfo {
   name: string;
@@ -9,22 +9,26 @@ interface ColorInfo {
 }
 
 const colors: ColorInfo[] = [
-  { name: "Background", cssVar: "--background", description: "Default background color" },
-  { name: "Foreground", cssVar: "--foreground", description: "Default text color" },
-  { name: "Card", cssVar: "--card", description: "Card background color" },
-  { name: "Card Foreground", cssVar: "--card-foreground", description: "Card text color" },
-  { name: "Primary", cssVar: "--primary", description: "Primary brand color" },
-  { name: "Primary Foreground", cssVar: "--primary-foreground", description: "Primary text color" },
-  { name: "Secondary", cssVar: "--secondary", description: "Secondary brand color" },
-  { name: "Secondary Foreground", cssVar: "--secondary-foreground", description: "Secondary text color" },
-  { name: "Muted", cssVar: "--muted", description: "Muted background color" },
-  { name: "Muted Foreground", cssVar: "--muted-foreground", description: "Muted text color" },
-  { name: "Accent", cssVar: "--accent", description: "Accent color" },
-  { name: "Accent Foreground", cssVar: "--accent-foreground", description: "Accent text color" },
-  { name: "Destructive", cssVar: "--destructive", description: "Error/danger color" },
-  { name: "Border", cssVar: "--border", description: "Default border color" },
-  { name: "Input", cssVar: "--input", description: "Input border color" },
-  { name: "Ring", cssVar: "--ring", description: "Focus ring color" },
+  { name: 'Background', cssVar: '--background', description: 'Default background color' },
+  { name: 'Foreground', cssVar: '--foreground', description: 'Default text color' },
+  { name: 'Card', cssVar: '--card', description: 'Card background color' },
+  { name: 'Card Foreground', cssVar: '--card-foreground', description: 'Card text color' },
+  { name: 'Primary', cssVar: '--primary', description: 'Primary brand color' },
+  { name: 'Primary Foreground', cssVar: '--primary-foreground', description: 'Primary text color' },
+  { name: 'Secondary', cssVar: '--secondary', description: 'Secondary brand color' },
+  {
+    name: 'Secondary Foreground',
+    cssVar: '--secondary-foreground',
+    description: 'Secondary text color',
+  },
+  { name: 'Muted', cssVar: '--muted', description: 'Muted background color' },
+  { name: 'Muted Foreground', cssVar: '--muted-foreground', description: 'Muted text color' },
+  { name: 'Accent', cssVar: '--accent', description: 'Accent color' },
+  { name: 'Accent Foreground', cssVar: '--accent-foreground', description: 'Accent text color' },
+  { name: 'Destructive', cssVar: '--destructive', description: 'Error/danger color' },
+  { name: 'Border', cssVar: '--border', description: 'Default border color' },
+  { name: 'Input', cssVar: '--input', description: 'Input border color' },
+  { name: 'Ring', cssVar: '--ring', description: 'Focus ring color' },
 ];
 
 export function ColorPalette() {
@@ -49,12 +53,8 @@ export function ColorPalette() {
               />
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-sm">{color.name}</h3>
-                <code className="text-xs text-muted-foreground block">
-                  var({color.cssVar})
-                </code>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {color.description}
-                </p>
+                <code className="text-xs text-muted-foreground block">var({color.cssVar})</code>
+                <p className="text-xs text-muted-foreground mt-1">{color.description}</p>
               </div>
             </div>
           </Card>

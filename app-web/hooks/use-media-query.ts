@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState<boolean>(false);
@@ -8,9 +8,9 @@ export function useMediaQuery(query: string): boolean {
 
   useEffect(() => {
     setMounted(true);
-    
+
     const media = window.matchMedia(query);
-    
+
     const updateMatch = () => {
       setMatches(media.matches);
     };
@@ -18,8 +18,8 @@ export function useMediaQuery(query: string): boolean {
     updateMatch();
 
     if (media.addEventListener) {
-      media.addEventListener("change", updateMatch);
-      return () => media.removeEventListener("change", updateMatch);
+      media.addEventListener('change', updateMatch);
+      return () => media.removeEventListener('change', updateMatch);
     } else {
       // Fallback for older browsers
       media.addListener(updateMatch);
@@ -37,25 +37,25 @@ export function useMediaQuery(query: string): boolean {
 
 // Preset media queries
 export function useIsMobile(): boolean {
-  return useMediaQuery("(max-width: 767px)");
+  return useMediaQuery('(max-width: 767px)');
 }
 
 export function useIsTablet(): boolean {
-  return useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
+  return useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
 }
 
 export function useIsDesktop(): boolean {
-  return useMediaQuery("(min-width: 1024px)");
+  return useMediaQuery('(min-width: 1024px)');
 }
 
 export function useIsLargeDesktop(): boolean {
-  return useMediaQuery("(min-width: 1280px)");
+  return useMediaQuery('(min-width: 1280px)');
 }
 
 export function usePrefersDarkMode(): boolean {
-  return useMediaQuery("(prefers-color-scheme: dark)");
+  return useMediaQuery('(prefers-color-scheme: dark)');
 }
 
 export function usePrefersReducedMotion(): boolean {
-  return useMediaQuery("(prefers-reduced-motion: reduce)");
+  return useMediaQuery('(prefers-reduced-motion: reduce)');
 }

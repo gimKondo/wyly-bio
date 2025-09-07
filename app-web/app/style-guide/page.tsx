@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { ColorPalette } from "@/components/style-guide/color-palette";
-import { Typography } from "@/components/style-guide/typography";
-import { Spacing } from "@/components/style-guide/spacing";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ColorPalette } from '@/components/style-guide/color-palette';
+import { Typography } from '@/components/style-guide/typography';
+import { Spacing } from '@/components/style-guide/spacing';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Dialog,
   DialogContent,
@@ -27,11 +27,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import { useTheme } from "@/hooks/use-theme";
-import { useBreakpoint } from "@/hooks/use-breakpoint";
-import { useIsMobile, useIsDesktop } from "@/hooks/use-media-query";
+} from '@/components/ui/dialog';
+import { useState } from 'react';
+import { useTheme } from '@/hooks/use-theme';
+import { useBreakpoint } from '@/hooks/use-breakpoint';
+import { useIsMobile, useIsDesktop } from '@/hooks/use-media-query';
 
 export default function StyleGuidePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -62,7 +62,8 @@ export default function StyleGuidePage() {
               <span className="font-semibold">Width:</span> {width}px
             </div>
             <div>
-              <span className="font-semibold">Device:</span> {isMobile ? "Mobile" : isDesktop ? "Desktop" : "Tablet"}
+              <span className="font-semibold">Device:</span>{' '}
+              {isMobile ? 'Mobile' : isDesktop ? 'Desktop' : 'Tablet'}
             </div>
           </div>
         </Card>
@@ -207,17 +208,15 @@ export default function StyleGuidePage() {
                   <DialogHeader>
                     <DialogTitle>Are you sure?</DialogTitle>
                     <DialogDescription>
-                      This action cannot be undone. This will permanently delete your account
-                      and remove your data from our servers.
+                      This action cannot be undone. This will permanently delete your account and
+                      remove your data from our servers.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex justify-end gap-2 mt-4">
                     <Button variant="outline" onClick={() => setDialogOpen(false)}>
                       Cancel
                     </Button>
-                    <Button onClick={() => setDialogOpen(false)}>
-                      Continue
-                    </Button>
+                    <Button onClick={() => setDialogOpen(false)}>Continue</Button>
                   </div>
                 </DialogContent>
               </Dialog>
@@ -227,23 +226,23 @@ export default function StyleGuidePage() {
               <h3 className="text-lg font-semibold mb-4">Theme Switcher</h3>
               <div className="flex gap-2">
                 <Button
-                  variant={theme === "light" ? "default" : "outline"}
+                  variant={theme === 'light' ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => setTheme("light")}
+                  onClick={() => setTheme('light')}
                 >
                   Light
                 </Button>
                 <Button
-                  variant={theme === "dark" ? "default" : "outline"}
+                  variant={theme === 'dark' ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => setTheme("dark")}
+                  onClick={() => setTheme('dark')}
                 >
                   Dark
                 </Button>
                 <Button
-                  variant={theme === "system" ? "default" : "outline"}
+                  variant={theme === 'system' ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => setTheme("system")}
+                  onClick={() => setTheme('system')}
                 >
                   System
                 </Button>
