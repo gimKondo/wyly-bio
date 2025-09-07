@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,9 +10,40 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Bell, Home, Search, Settings, User, Camera, Menu } from 'lucide-react';
+import { Bell, Home, Search, Settings, User, Camera, Menu, X } from 'lucide-react';
 
 export function Header() {
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const mobileSearchRef = useRef<HTMLInputElement>(null);
+
+  const handleMobileSearchToggle = () => {
+    setIsMobileSearchOpen(!isMobileSearchOpen);
+  };
+
+  const handleMobileSearchClose = () => {
+    setIsMobileSearchOpen(false);
+  };
+
+  // フォーカス管理とESCキーハンドリング
+  useEffect(() => {
+    if (isMobileSearchOpen && mobileSearchRef.current) {
+      mobileSearchRef.current.focus();
+    }
+  }, [isMobileSearchOpen]);
+
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileSearchOpen(false);
+      }
+    };
+
+    if (isMobileSearchOpen) {
+      document.addEventListener('keydown', handleEsc);
+      return () => document.removeEventListener('keydown', handleEsc);
+    }
+  }, [isMobileSearchOpen]);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container mx-auto px-4">
@@ -32,6 +64,17 @@ export function Header() {
 
           {/* ナビゲーション */}
           <div className="flex items-center space-x-2">
+            {/* モバイル検索ボタン */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={handleMobileSearchToggle}
+            >
+              <Search className="h-5 w-5" />
+              <span className="sr-only">検索</span>
+            </Button>
+
             <Button variant="ghost" size="icon" className="hidden md:inline-flex">
               <Home className="h-5 w-5" />
               <span className="sr-only">ホーム</span>
@@ -74,6 +117,29 @@ export function Header() {
             </Button>
           </div>
         </div>
+
+        {/* モバイル検索バー */}
+        {isMobileSearchOpen && (
+          <div className="md:hidden border-t bg-card/95 backdrop-blur">
+            <div className="container mx-auto px-4 py-3">
+              <div className="flex items-center space-x-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    ref={mobileSearchRef}
+                    type="search"
+                    placeholder="野生動物を検索..."
+                    className="pl-9"
+                  />
+                </div>
+                <Button variant="ghost" size="icon" onClick={handleMobileSearchClose}>
+                  <X className="h-5 w-5" />
+                  <span className="sr-only">検索を閉じる</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
