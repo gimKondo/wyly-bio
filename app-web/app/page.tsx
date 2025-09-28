@@ -30,7 +30,7 @@ export default function Home() {
   const renderContent = () => {
     switch (currentView) {
       case 'list':
-        return <Feed initialPosts={filteredPosts} />;
+        return <Feed initialPosts={filteredPosts} onPostClick={handlePostClick} />;
       case 'calendar':
         return <CalendarView posts={filteredPosts} onPostClick={handlePostClick} />;
       case 'map':

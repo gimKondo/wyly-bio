@@ -7,9 +7,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 interface FeedProps {
   initialPosts?: Post[];
   onLoadMore?: () => Promise<Post[]>;
+  onPostClick?: (post: Post) => void;
 }
 
-export function Feed({ initialPosts = [], onLoadMore }: FeedProps) {
+export function Feed({ initialPosts = [], onLoadMore, onPostClick }: FeedProps) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -89,11 +90,11 @@ export function Feed({ initialPosts = [], onLoadMore }: FeedProps) {
         if (posts.length === index + 1) {
           return (
             <div ref={lastPostElementRef} key={post.id}>
-              <PostCard post={post} />
+              <PostCard post={post} onClick={onPostClick} />
             </div>
           );
         } else {
-          return <PostCard key={post.id} post={post} />;
+          return <PostCard key={post.id} post={post} onClick={onPostClick} />;
         }
       })}
 

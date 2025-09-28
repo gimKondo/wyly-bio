@@ -11,9 +11,10 @@ import { Post } from '@/types/post';
 
 interface PostCardProps {
   post: Post;
+  onClick?: (post: Post) => void;
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, onClick }: PostCardProps) {
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likesCount, setLikesCount] = useState(post.likes);
 
@@ -23,7 +24,7 @@ export function PostCard({ post }: PostCardProps) {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full cursor-pointer" onClick={() => onClick?.(post)}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -37,12 +38,12 @@ export function PostCard({ post }: PostCardProps) {
                 <span>@{post.author.username}</span>
                 <span>•</span>
                 <span>{post.timestamp}</span>
-                {post.location && (
+                {post.locationName && (
                   <>
                     <span>•</span>
                     <div className="flex items-center">
                       <MapPin className="h-3 w-3 mr-1" />
-                      <span>{post.location}</span>
+                      <span>{post.locationName}</span>
                     </div>
                   </>
                 )}
@@ -59,10 +60,10 @@ export function PostCard({ post }: PostCardProps) {
       <CardContent className="pb-3">
         {post.content && <p className="mb-3">{post.content}</p>}
 
-        {post.image && (
+        {post.imageUrl && (
           <div className="rounded-lg overflow-hidden mb-3">
             <ImageWithFallback
-              src={post.image}
+              src={post.imageUrl}
               alt="投稿画像"
               className="w-full h-auto object-cover"
             />

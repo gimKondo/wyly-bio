@@ -6,11 +6,11 @@ export interface Post {
     avatar: string;
   };
   content: string;
-  image?: string;
-  location?: string;
-  coordinates?: {
-    lat: number;
-    lng: number;
+  imageUrl?: string;
+  locationName?: string;
+  location?: {
+    latitude: number;
+    longitude: number;
   };
   tags: string[];
   likes: number;
