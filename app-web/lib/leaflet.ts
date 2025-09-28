@@ -1,13 +1,20 @@
-import L from 'leaflet';
-
 // Leafletのアイコン設定を修正（Next.jsのパス問題対策）
-export const setupLeafletIcons = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  delete (L.Icon.Default.prototype as any)._getIconUrl;
+export const setupLeafletIcons = async () => {
+  // ブラウザ環境でのみ実行
+  if (typeof window === 'undefined') return;
 
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: '/leaflet/marker-icon-2x.png',
-    iconUrl: '/leaflet/marker-icon.png',
-    shadowUrl: '/leaflet/marker-shadow.png',
-  });
+  try {
+    const L = await import('leaflet');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    delete (L.default.Icon.Default.prototype as any)._getIconUrl;
+
+    L.default.Icon.Default.mergeOptions({
+      iconRetinaUrl: '/leaflet/marker-icon-2x.png',
+      iconUrl: '/leaflet/marker-icon.png',
+      shadowUrl: '/leaflet/marker-shadow.png',
+    });
+  } catch (error) {
+    console.warn('Failed to setup Leaflet icons:', error);
+  }
 };
