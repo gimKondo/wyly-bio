@@ -3,7 +3,7 @@
 .vscode/
 
 # AI開発ツール設定
-.claude/
+.claude/settings.local.json
 .serena/
 
 # プロジェクトドキュメント（公開不要）
