@@ -10,11 +10,35 @@ export const setupLeafletIcons = async () => {
     delete (L.default.Icon.Default.prototype as any)._getIconUrl;
 
     L.default.Icon.Default.mergeOptions({
-      iconRetinaUrl: '/leaflet/marker-icon-2x.png',
-      iconUrl: '/leaflet/marker-icon.png',
-      shadowUrl: '/leaflet/marker-shadow.png',
+      iconRetinaUrl:
+        'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
     });
   } catch (error) {
     console.warn('Failed to setup Leaflet icons:', error);
+  }
+};
+
+// カスタムマーカーアイコンを作成する関数
+export const createCustomIcon = async () => {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const L = await import('leaflet');
+
+    return L.default.icon({
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+      iconRetinaUrl:
+        'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+    });
+  } catch (error) {
+    console.warn('Failed to create custom icon:', error);
+    return null;
   }
 };

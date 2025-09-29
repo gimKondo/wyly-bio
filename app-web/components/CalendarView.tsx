@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PostCard } from './PostCard';
-import type { Post } from '@/lib/data';
+import type { Post } from '@/types/post';
 
 interface CalendarViewProps {
   posts: Post[];

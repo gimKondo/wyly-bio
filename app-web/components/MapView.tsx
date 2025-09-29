@@ -3,7 +3,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { PostCard } from './PostCard';
-import type { Post } from '@/lib/data';
+import type { Post } from '@/types/post';
 
 // MapViewClient全体を動的インポート（SSR対策）
 const MapViewClient = dynamic(() => import('./MapViewClient').then((mod) => mod.MapViewClient), {

@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { PostCard } from './PostCard';
-import type { Post } from '@/lib/data';
-import { setupLeafletIcons } from '@/lib/leaflet';
+import type { Post } from '@/types/post';
+import { setupLeafletIcons, createCustomIcon } from '@/lib/leaflet';
 
 interface MapViewClientProps {
   posts: Post[];
@@ -13,9 +13,17 @@ interface MapViewClientProps {
 
 export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [customIcon, setCustomIcon] = useState<any>(null);
 
   useEffect(() => {
-    setupLeafletIcons();
+    const initializeIcons = async () => {
+      await setupLeafletIcons();
+      const icon = await createCustomIcon();
+      setCustomIcon(icon);
+    };
+
+    initializeIcons();
   }, []);
 
   // 位置情報を持つ投稿のみフィルタリング
@@ -27,6 +35,13 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
   const nonGeotaggedPosts = posts.filter(
     (post) => !post.location?.latitude || !post.location?.longitude
   );
+
+  // デバッグ用ログ
+  useEffect(() => {
+    console.log('Total posts:', posts.length);
+    console.log('Geotagged posts:', geotaggedPosts.length);
+    console.log('Geotagged posts data:', geotaggedPosts);
+  }, [posts, geotaggedPosts]);
 
   // 地図の中心点を計算（投稿の平均位置、または東京をデフォルトに）
   const calculateCenter = (): [number, number] => {
@@ -61,6 +76,7 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
                 <Marker
                   key={post.id}
                   position={[post.location.latitude, post.location.longitude]}
+                  icon={customIcon || undefined}
                   eventHandlers={{
                     click: () => {
                       setSelectedPost(post);
@@ -107,19 +123,6 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
           <h3 className="text-lg font-semibold">選択中の投稿</h3>
           <div className="max-w-md">
             <PostCard post={selectedPost} onClick={() => onPostClick(selectedPost)} />
-          </div>
-        </div>
-      )}
-
-      {nonGeotaggedPosts.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">
-            位置情報のない投稿 ({nonGeotaggedPosts.length}件)
-          </h3>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {nonGeotaggedPosts.map((post) => (
-              <PostCard key={post.id} post={post} onClick={() => onPostClick(post)} />
-            ))}
           </div>
         </div>
       )}
