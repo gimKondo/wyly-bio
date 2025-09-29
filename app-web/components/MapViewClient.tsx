@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { PostCard } from './PostCard';
 import type { Post } from '@/types/post';
-import { setupLeafletIcons, createCustomIcon } from '@/lib/leaflet';
+import 'leaflet/dist/leaflet.css';
 
 interface MapViewClientProps {
   posts: Post[];
@@ -14,16 +14,26 @@ interface MapViewClientProps {
 export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [customIcon, setCustomIcon] = useState<any>(null);
+  const [LeafletIcon, setLeafletIcon] = useState<any>(null);
 
+  // Leafletアイコンの初期化
   useEffect(() => {
-    const initializeIcons = async () => {
-      await setupLeafletIcons();
-      const icon = await createCustomIcon();
-      setCustomIcon(icon);
-    };
+    (async () => {
+      const L = (await import('leaflet')).default;
 
-    initializeIcons();
+      const DefaultIcon = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+      });
+
+      L.Marker.prototype.options.icon = DefaultIcon;
+      setLeafletIcon(DefaultIcon);
+    })();
   }, []);
 
   // 位置情報を持つ投稿のみフィルタリング
@@ -57,13 +67,25 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
 
   const center = calculateCenter();
 
+  // アイコンがロードされるまで待つ
+  if (!LeafletIcon) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div className="flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          <span className="ml-3 text-gray-600">地図を読み込み中...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
         <h2 className="text-lg font-semibold mb-4">投稿マップ</h2>
 
         <div className="h-[500px] rounded-lg overflow-hidden">
-          <MapContainer center={center} zoom={10} className="h-full w-full">
+          <MapContainer center={center} zoom={6} className="h-full w-full">
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -76,7 +98,7 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
                 <Marker
                   key={post.id}
                   position={[post.location.latitude, post.location.longitude]}
-                  icon={customIcon || undefined}
+                  icon={LeafletIcon}
                   eventHandlers={{
                     click: () => {
                       setSelectedPost(post);
@@ -97,6 +119,9 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
                         {post.content.length > 100
                           ? post.content.substring(0, 100) + '...'
                           : post.content}
+                      </p>
+                      <p className="text-xs text-gray-500 mb-2">
+                        📍 {post.locationName}
                       </p>
                       <button
                         onClick={() => onPostClick(post)}
