@@ -32,18 +32,18 @@ export function PostCard({ post, onClick }: PostCardProps) {
               <AvatarImage src={post.author.avatar} alt={post.author.name} />
               <AvatarFallback>{post.author.name[0]}</AvatarFallback>
             </Avatar>
-            <div>
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-medium">{post.author.name}</p>
-              <div className="flex items-center text-xs text-muted-foreground space-x-2">
-                <span>@{post.author.username}</span>
-                <span>•</span>
-                <span>{post.timestamp}</span>
+              <div className="flex flex-wrap items-center text-xs text-muted-foreground gap-x-2 gap-y-1">
+                <span className="flex-shrink-0">@{post.author.username}</span>
+                <span className="flex-shrink-0">•</span>
+                <span className="flex-shrink-0">{post.timestamp}</span>
                 {post.locationName && (
                   <>
-                    <span>•</span>
-                    <div className="flex items-center">
-                      <MapPin className="h-3 w-3 mr-1" />
-                      <span>{post.locationName}</span>
+                    <span className="flex-shrink-0">•</span>
+                    <div className="flex items-center min-w-0">
+                      <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+                      <span className="truncate">{post.locationName}</span>
                     </div>
                   </>
                 )}

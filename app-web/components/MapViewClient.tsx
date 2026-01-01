@@ -120,9 +120,7 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
                           ? post.content.substring(0, 100) + '...'
                           : post.content}
                       </p>
-                      <p className="text-xs text-gray-500 mb-2">
-                        📍 {post.locationName}
-                      </p>
+                      <p className="text-xs text-gray-500 mb-2">📍 {post.locationName}</p>
                       <button
                         onClick={() => onPostClick(post)}
                         className="text-blue-500 hover:text-blue-600 text-sm font-medium"
