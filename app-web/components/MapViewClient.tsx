@@ -46,7 +46,6 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
     (post) => !post.location?.latitude || !post.location?.longitude
   );
 
-
   // 地図の中心点を計算（投稿の平均位置、または東京をデフォルトに）
   const calculateCenter = (): [number, number] => {
     if (geotaggedPosts.length === 0) {
