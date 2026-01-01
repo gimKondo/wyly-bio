@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import { LayoutGrid, Calendar, MapPin } from 'lucide-react';
 
 export type ViewMode = 'list' | 'calendar' | 'map';
@@ -10,7 +10,10 @@ interface ViewSwitcherProps {
   onViewChange: (view: ViewMode) => void;
 }
 
-export function ViewSwitcher({ currentView, onViewChange }: ViewSwitcherProps) {
+export const ViewSwitcher = memo(function ViewSwitcher({
+  currentView,
+  onViewChange,
+}: ViewSwitcherProps) {
   const views: { mode: ViewMode; icon: React.ReactNode; label: string }[] = [
     {
       mode: 'list',
@@ -52,4 +55,4 @@ export function ViewSwitcher({ currentView, onViewChange }: ViewSwitcherProps) {
       ))}
     </div>
   );
-}
+});

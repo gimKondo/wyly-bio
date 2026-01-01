@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
@@ -14,7 +14,7 @@ interface PostCardProps {
   onClick?: (post: Post) => void;
 }
 
-export function PostCard({ post, onClick }: PostCardProps) {
+export const PostCard = memo(function PostCard({ post, onClick }: PostCardProps) {
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likesCount, setLikesCount] = useState(post.likes);
 
@@ -110,4 +110,4 @@ export function PostCard({ post, onClick }: PostCardProps) {
       </CardFooter>
     </Card>
   );
-}
+});

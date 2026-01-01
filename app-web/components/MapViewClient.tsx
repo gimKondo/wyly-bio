@@ -46,12 +46,6 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
     (post) => !post.location?.latitude || !post.location?.longitude
   );
 
-  // デバッグ用ログ
-  useEffect(() => {
-    console.log('Total posts:', posts.length);
-    console.log('Geotagged posts:', geotaggedPosts.length);
-    console.log('Geotagged posts data:', geotaggedPosts);
-  }, [posts, geotaggedPosts]);
 
   // 地図の中心点を計算（投稿の平均位置、または東京をデフォルトに）
   const calculateCenter = (): [number, number] => {
@@ -109,6 +103,7 @@ export function MapViewClient({ posts, onPostClick }: MapViewClientProps) {
                     <div className="w-64">
                       <h3 className="font-semibold mb-2">{post.author.name}</h3>
                       {post.imageUrl && (
+                        // eslint-disable-next-line @next/next/no-img-element -- Leafletポップアップ内の外部画像
                         <img
                           src={post.imageUrl}
                           alt="投稿画像"
