@@ -5,8 +5,11 @@ import { Feed } from '@/components/Feed';
 import { PostForm } from '@/components/PostForm';
 import { ViewSwitcher, ViewMode } from '@/components/ViewSwitcher';
 import { FeedFilter, FilterOptions } from '@/components/FeedFilter';
+import { CalendarView } from '@/components/CalendarView';
+import { MapView } from '@/components/MapView';
 import { mockPosts } from '@/data/mockPosts';
 import { filterPosts, getUniqueTagsFromPosts } from '@/lib/filterPosts';
+import type { Post } from '@/lib/data';
 
 export default function Home() {
   const [currentView, setCurrentView] = useState<ViewMode>('list');
@@ -19,22 +22,19 @@ export default function Home() {
   const availableTags = useMemo(() => getUniqueTagsFromPosts(mockPosts), []);
   const filteredPosts = useMemo(() => filterPosts(mockPosts, filters), [filters]);
 
+  const handlePostClick = (post: Post) => {
+    // 将来的にはモーダル表示やルーティングを実装
+    console.log('Post clicked:', post);
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'list':
-        return <Feed initialPosts={filteredPosts} />;
+        return <Feed initialPosts={filteredPosts} onPostClick={handlePostClick} />;
       case 'calendar':
-        return (
-          <div className="flex items-center justify-center py-12 text-gray-500">
-            <p>カレンダービュー（Phase 5で実装予定）</p>
-          </div>
-        );
+        return <CalendarView posts={filteredPosts} onPostClick={handlePostClick} />;
       case 'map':
-        return (
-          <div className="flex items-center justify-center py-12 text-gray-500">
-            <p>マップビュー（Phase 5で実装予定）</p>
-          </div>
-        );
+        return <MapView posts={filteredPosts} onPostClick={handlePostClick} />;
       default:
         return <Feed initialPosts={filteredPosts} />;
     }

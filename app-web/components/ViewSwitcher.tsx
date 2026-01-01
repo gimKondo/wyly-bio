@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React from 'react';
 import { LayoutGrid, Calendar, MapPin } from 'lucide-react';
 
 export type ViewMode = 'list' | 'calendar' | 'map';
