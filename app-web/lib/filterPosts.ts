@@ -13,7 +13,7 @@ export function filterPosts(posts: Post[], filters: FilterOptions): Post[] {
 
     // 場所フィルター
     if (filters.location) {
-      if (!post.location?.toLowerCase().includes(filters.location.toLowerCase())) {
+      if (!post.locationName?.toLowerCase().includes(filters.location.toLowerCase())) {
         return false;
       }
     }

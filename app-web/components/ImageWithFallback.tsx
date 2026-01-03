@@ -20,10 +20,12 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
       style={style}
     >
       <div className="flex items-center justify-center w-full h-full">
+        {/* eslint-disable-next-line @next/next/no-img-element -- フォールバック用のインラインSVG */}
         <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} />
       </div>
     </div>
   ) : (
+    // eslint-disable-next-line @next/next/no-img-element -- 動的な外部画像URL対応のため
     <img src={src} alt={alt} className={className} style={style} {...rest} onError={handleError} />
   );
 }

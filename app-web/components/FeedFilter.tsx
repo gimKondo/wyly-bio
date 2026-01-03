@@ -62,8 +62,11 @@ export function FeedFilter({ onFilterChange, availableTags }: FeedFilterProps) {
       {/* フィルターボタン */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls="filter-panel"
+        aria-label={`フィルター${hasActiveFilters ? ` (${filters.tags.length + (filters.location ? 1 : 0) + (filters.timeRange !== 'all' ? 1 : 0)}件適用中)` : ''}`}
         className={`
-          flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border transition-colors
+          flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
           ${
             hasActiveFilters
               ? 'bg-blue-50 border-blue-300 text-blue-700'
@@ -71,10 +74,13 @@ export function FeedFilter({ onFilterChange, availableTags }: FeedFilterProps) {
           }
         `}
       >
-        <Filter className="w-4 h-4" />
+        <Filter className="w-4 h-4" aria-hidden="true" />
         フィルター
         {hasActiveFilters && (
-          <span className="bg-blue-600 text-white text-xs rounded-full px-2 py-0.5">
+          <span
+            className="bg-blue-600 text-white text-xs rounded-full px-2 py-0.5"
+            aria-hidden="true"
+          >
             {filters.tags.length +
               (filters.location ? 1 : 0) +
               (filters.timeRange !== 'all' ? 1 : 0)}
@@ -84,18 +90,29 @@ export function FeedFilter({ onFilterChange, availableTags }: FeedFilterProps) {
 
       {/* フィルターパネル */}
       {isOpen && (
-        <div className="absolute top-full mt-2 left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-20 p-4">
+        <div
+          id="filter-panel"
+          role="region"
+          aria-labelledby="filter-panel-title"
+          className="absolute top-full mt-2 left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-20 p-4"
+        >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-gray-900">フィルター</h3>
-            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-600">
-              <X className="w-4 h-4" />
+            <h3 className="font-semibold text-gray-900" id="filter-panel-title">
+              フィルター
+            </h3>
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="フィルターパネルを閉じる"
+              className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded"
+            >
+              <X className="w-4 h-4" aria-hidden="true" />
             </button>
           </div>
 
           {/* 時期フィルター */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">投稿時期</label>
-            <div className="grid grid-cols-2 gap-2">
+          <fieldset className="mb-4">
+            <legend className="block text-sm font-medium text-gray-700 mb-2">投稿時期</legend>
+            <div className="grid grid-cols-2 gap-2" role="group" aria-label="投稿時期を選択">
               {[
                 { value: 'all', label: 'すべて' },
                 { value: 'today', label: '今日' },
@@ -105,8 +122,9 @@ export function FeedFilter({ onFilterChange, availableTags }: FeedFilterProps) {
                 <button
                   key={option.value}
                   onClick={() => handleTimeRangeChange(option.value as FilterOptions['timeRange'])}
+                  aria-pressed={filters.timeRange === option.value}
                   className={`
-                    px-3 py-2 text-sm rounded-md border transition-colors
+                    px-3 py-2 text-sm rounded-md border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
                     ${
                       filters.timeRange === option.value
                         ? 'bg-blue-50 border-blue-300 text-blue-700'
@@ -118,12 +136,18 @@ export function FeedFilter({ onFilterChange, availableTags }: FeedFilterProps) {
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
 
           {/* 場所フィルター */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">場所</label>
+            <label
+              htmlFor="location-filter"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              場所
+            </label>
             <input
+              id="location-filter"
               type="text"
               value={filters.location}
               onChange={(e) => handleLocationChange(e.target.value)}
@@ -133,15 +157,20 @@ export function FeedFilter({ onFilterChange, availableTags }: FeedFilterProps) {
           </div>
 
           {/* タグフィルター */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">タグ</label>
-            <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+          <fieldset className="mb-4">
+            <legend className="block text-sm font-medium text-gray-700 mb-2">タグ</legend>
+            <div
+              className="flex flex-wrap gap-2 max-h-32 overflow-y-auto"
+              role="group"
+              aria-label="タグを選択"
+            >
               {availableTags.map((tag) => (
                 <button
                   key={tag}
                   onClick={() => handleTagToggle(tag)}
+                  aria-pressed={filters.tags.includes(tag)}
                   className={`
-                    px-3 py-1 text-sm rounded-full border transition-colors
+                    px-3 py-1 text-sm rounded-full border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
                     ${
                       filters.tags.includes(tag)
                         ? 'bg-blue-50 border-blue-300 text-blue-700'
@@ -153,14 +182,14 @@ export function FeedFilter({ onFilterChange, availableTags }: FeedFilterProps) {
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
 
           {/* フィルタークリア */}
           {hasActiveFilters && (
             <div className="pt-3 border-t border-gray-200">
               <button
                 onClick={clearFilters}
-                className="w-full px-4 py-2 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md transition-colors"
+                className="w-full px-4 py-2 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 フィルターをクリア
               </button>

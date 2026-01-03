@@ -22,8 +22,7 @@ export function PostForm() {
 
   const handlePost = () => {
     if (content.trim() || selectedImage) {
-      // 実際の実装では、投稿をサーバーに送信
-      console.log('投稿:', { content, image: selectedImage });
+      // TODO: 実際の実装では、投稿をサーバーに送信
       setContent('');
       setSelectedImage(null);
     }

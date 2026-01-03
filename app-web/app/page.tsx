@@ -9,7 +9,7 @@ import { CalendarView } from '@/components/CalendarView';
 import { MapView } from '@/components/MapView';
 import { mockPosts } from '@/data/mockPosts';
 import { filterPosts, getUniqueTagsFromPosts } from '@/lib/filterPosts';
-import type { Post } from '@/lib/data';
+import type { Post } from '@/types/post';
 
 export default function Home() {
   const [currentView, setCurrentView] = useState<ViewMode>('list');
@@ -22,9 +22,8 @@ export default function Home() {
   const availableTags = useMemo(() => getUniqueTagsFromPosts(mockPosts), []);
   const filteredPosts = useMemo(() => filterPosts(mockPosts, filters), [filters]);
 
-  const handlePostClick = (post: Post) => {
-    // 将来的にはモーダル表示やルーティングを実装
-    console.log('Post clicked:', post);
+  const handlePostClick = (_post: Post) => {
+    // TODO: 将来的にはモーダル表示やルーティングを実装
   };
 
   const renderContent = () => {
@@ -43,15 +42,26 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ヘッダー */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-10" role="banner">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <h1 className="text-2xl font-bold text-gray-900">Wyly</h1>
-            <nav className="flex gap-4">
-              <button className="text-gray-600 hover:text-gray-900">ホーム</button>
-              <button className="text-gray-600 hover:text-gray-900">探索</button>
-              <button className="text-gray-600 hover:text-gray-900">通知</button>
-              <button className="text-gray-600 hover:text-gray-900">プロフィール</button>
+            <nav className="flex gap-4" aria-label="メインナビゲーション">
+              <button
+                className="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded"
+                aria-current="page"
+              >
+                ホーム
+              </button>
+              <button className="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded">
+                探索
+              </button>
+              <button className="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded">
+                通知
+              </button>
+              <button className="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded">
+                プロフィール
+              </button>
             </nav>
           </div>
         </div>

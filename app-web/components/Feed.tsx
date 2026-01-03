@@ -15,20 +15,7 @@ export function Feed({ initialPosts = [], onLoadMore, onPostClick }: FeedProps) 
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
-  const observer = useRef<IntersectionObserver>();
-  const lastPostElementRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          handleLoadMore();
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore]
-  );
+  const observer = useRef<IntersectionObserver | undefined>(undefined);
 
   useEffect(() => {
     // 初期データの設定
@@ -73,6 +60,20 @@ export function Feed({ initialPosts = [], onLoadMore, onPostClick }: FeedProps) 
       setLoading(false);
     }
   }, [loading, hasMore, onLoadMore, page, initialPosts, posts]);
+
+  const lastPostElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          handleLoadMore();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore, handleLoadMore]
+  );
 
   if (posts.length === 0 && !loading) {
     return (
