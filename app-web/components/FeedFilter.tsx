@@ -92,8 +92,8 @@ export function FeedFilter({ onFilterChange, availableTags }: FeedFilterProps) {
       {isOpen && (
         <div
           id="filter-panel"
-          role="dialog"
-          aria-label="フィルター設定"
+          role="region"
+          aria-labelledby="filter-panel-title"
           className="absolute top-full mt-2 left-0 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-20 p-4"
         >
           <div className="flex items-center justify-between mb-4">

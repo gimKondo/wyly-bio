@@ -15,7 +15,7 @@ export function Feed({ initialPosts = [], onLoadMore, onPostClick }: FeedProps) 
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
-  const observer = useRef<IntersectionObserver>(null);
+  const observer = useRef<IntersectionObserver | undefined>(undefined);
 
   useEffect(() => {
     // 初期データの設定
