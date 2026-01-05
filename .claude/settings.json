@@ -19,5 +19,9 @@
     "deny": [
       "Bash(sudo:*)", "Read(id_rsa)", "Bash(curl:*)", "Bash(wget:*)", "Bash(psql:*)", "Bash(ssh:*)"
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx ccusage statusline"
   }
 }
