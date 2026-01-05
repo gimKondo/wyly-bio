@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run format:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git pull:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh auth:*)",
+      "Bash(gh issue create:*)",
+      "Bash(gh issue view:*)"
+    ],
+    "deny": [
+      "Bash(sudo:*)", "Read(id_rsa)", "Bash(curl:*)", "Bash(wget:*)", "Bash(psql:*)", "Bash(ssh:*)"
+    ]
+  }
+}
