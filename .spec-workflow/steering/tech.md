@@ -3,7 +3,16 @@
 ## Project Type
 野生動物観察を共有するソーシャルネットワーキングWebアプリケーション（PWA対応）
 
-## Core Technologies
+## サービス構成
+
+| サービス | 役割 | 技術 |
+|---------|------|------|
+| app-web | Webフロントエンド | Next.js 15 / TypeScript |
+| app-backend | APIサーバー | Go / Echo |
+
+---
+
+## app-web (フロントエンド)
 
 ### Primary Language(s)
 - **Language**: TypeScript 5.x
@@ -100,7 +109,66 @@
 4. **Leaflet**: 軽量で柔軟な地図ライブラリ、OpenStreetMap無料利用可能
 5. **PWA対応**: モバイルでのネイティブアプリ風体験
 
-## Known Limitations
-- **バックエンド未実装**: 現在はフロントエンドのみ、データ永続化なし
-- **認証機能なし**: ユーザー管理機能は未実装
+### Known Limitations
 - **リアルタイム更新なし**: WebSocket等のリアルタイム通信は未実装
+- **バックエンド連携未実装**: 現在はモックデータを使用
+
+---
+
+## app-backend (バックエンド)
+
+### Primary Language(s)
+- **Language**: Go 1.23
+- **Framework**: Echo v4
+
+### Key Dependencies/Libraries
+
+#### Webフレームワーク
+- **Echo v4.13.x**: 高速・軽量なGoのWebフレームワーク
+
+#### コード生成
+- **oapi-codegen**: OpenAPI仕様からGoコードを生成
+- **SQLc**: SQLからタイプセーフなGoコードを生成
+
+#### 認証
+- **Firebase Auth**: JWT トークンによる認証（予定）
+
+### Application Architecture
+- **クリーンアーキテクチャ**: handler → service → db の層構造
+- **OpenAPI駆動開発**: API仕様を先に定義し、コードを生成
+- **SQLc**: SQLファーストなDB操作、タイプセーフなクエリ
+
+### Data Storage
+- **Primary storage**: PostgreSQL
+- **Data formats**: JSON (REST API)
+
+### External Integrations
+- **Firebase Auth**: JWT認証
+- **OpenStreetMap**: 地図タイル（フロントエンド経由）
+
+### Build & Development Tools
+- **Build System**: Go build / Makefile
+- **Development workflow**: `make dev` (port 8080)
+- **Docker**: コンテナ化対応
+
+### Code Quality Tools
+- **Static Analysis**: golangci-lint
+- **Formatting**: go fmt, goimports
+
+### Development Commands
+```bash
+make dev            # 開発サーバー起動 (port 8080)
+make build          # バイナリビルド
+make test           # テスト実行
+make lint           # リンター実行
+make fmt            # フォーマット
+make generate       # コード生成 (API + DB)
+make generate-api   # OpenAPIからコード生成
+make generate-db    # SQLcでDBコード生成
+make docker-build   # Dockerイメージビルド
+make tools          # 開発ツールインストール
+```
+
+### Known Limitations
+- **認証機能未完成**: Firebase Auth連携は実装予定
+- **リアルタイム更新なし**: WebSocket等は未実装

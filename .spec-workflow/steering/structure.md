@@ -4,7 +4,7 @@
 
 ```
 wyly-bio/
-├── app-web/                    # Webアプリケーション (Next.js)
+├── app-web/                    # Webフロントエンド (Next.js)
 │   ├── app/                    # App Router ページ・レイアウト
 │   │   ├── layout.tsx          # ルートレイアウト
 │   │   ├── page.tsx            # ホームページ
@@ -28,6 +28,29 @@ wyly-bio/
 │   ├── types/                  # 型定義
 │   │   └── post.ts             # 投稿関連の型
 │   └── public/                 # 静的ファイル
+│
+├── app-backend/                # APIサーバー (Go/Echo)
+│   ├── cmd/
+│   │   └── server/
+│   │       └── main.go         # エントリポイント
+│   ├── internal/               # 内部パッケージ
+│   │   ├── handler/            # HTTPハンドラー
+│   │   ├── middleware/         # ミドルウェア（認証等）
+│   │   ├── service/            # ビジネスロジック
+│   │   └── db/                 # データベース層
+│   │       ├── schema.sql      # DBスキーマ定義
+│   │       ├── query.sql       # SQLクエリ定義
+│   │       └── generated/      # SQLc生成コード
+│   ├── api/                    # API定義
+│   │   ├── openapi.yaml        # OpenAPI仕様
+│   │   └── generated/          # oapi-codegen生成コード
+│   ├── go.mod                  # Go依存関係
+│   ├── go.sum
+│   ├── Makefile                # ビルド・開発コマンド
+│   ├── Dockerfile              # コンテナ設定
+│   ├── sqlc.yaml               # SQLc設定
+│   └── .env.sample             # 環境変数サンプル
+│
 ├── .spec-workflow/             # 仕様・設計ドキュメント
 │   ├── steering/               # ステアリングドキュメント
 │   │   ├── product.md          # プロダクト概要
@@ -37,16 +60,20 @@ wyly-bio/
 └── CLAUDE.md                   # Claude Code設定
 ```
 
-## Naming Conventions
+---
 
-### Files
+## app-web 固有の規約
+
+### Naming Conventions
+
+#### Files
 - **Components**: `PascalCase.tsx` (例: `PostCard.tsx`, `MapView.tsx`)
 - **Pages**: `page.tsx` (App Router規約)
 - **Utilities**: `camelCase.ts` (例: `utils.ts`, `leaflet.ts`)
 - **Types**: `camelCase.ts` (例: `post.ts`)
 - **Data**: `camelCase.ts` (例: `mockPosts.ts`)
 
-### Code
+#### Code
 - **Components**: `PascalCase` (例: `PostCard`, `ViewSwitcher`)
 - **Functions**: `camelCase` (例: `getMockPosts`, `handleClick`)
 - **Constants**: `UPPER_SNAKE_CASE` または `camelCase`
@@ -132,8 +159,94 @@ app/page.tsx (Server Component)
 - **ファイル**: 300行以内を目安
 - **ネスト深度**: 最大4レベル
 
-## Documentation Standards
+### Documentation Standards
 
 - コンポーネントのPropsには型定義を必須とする
 - 複雑なロジックにはインラインコメントを追加
 - 公開APIにはJSDocコメントを推奨
+
+---
+
+## app-backend 固有の規約
+
+### Naming Conventions
+
+#### Files
+- **Packages**: `snake_case` (例: `handler`, `db`)
+- **Go files**: `snake_case.go` (例: `user_handler.go`, `health.go`)
+- **Generated files**: `*.gen.go` (例: `types.gen.go`, `server.gen.go`)
+- **SQL files**: `snake_case.sql` (例: `schema.sql`, `query.sql`)
+
+#### Code
+- **Packages**: `lowercase` (例: `handler`, `service`, `db`)
+- **Public Functions/Types**: `PascalCase` (例: `CreateUser`, `UserService`)
+- **Private Functions/Variables**: `camelCase` (例: `getUserByID`, `dbConn`)
+- **Constants**: `PascalCase` または `camelCase`
+- **Interfaces**: `PascalCase` with `-er` suffix (例: `UserRepository`, `AuthMiddleware`)
+
+### Code Structure Patterns
+
+#### Handler Layer
+```go
+// internal/handler/user.go
+type UserHandler struct {
+    service *service.UserService
+}
+
+func NewUserHandler(s *service.UserService) *UserHandler {
+    return &UserHandler{service: s}
+}
+
+func (h *UserHandler) CreateUser(c echo.Context) error {
+    // リクエストバインド → サービス呼び出し → レスポンス
+}
+```
+
+#### Service Layer
+```go
+// internal/service/user.go
+type UserService struct {
+    queries *db.Queries
+}
+
+func NewUserService(q *db.Queries) *UserService {
+    return &UserService{queries: q}
+}
+
+func (s *UserService) CreateUser(ctx context.Context, req CreateUserRequest) (*User, error) {
+    // ビジネスロジック → DB操作
+}
+```
+
+#### DB Layer (SQLc)
+```sql
+-- internal/db/query.sql
+-- name: GetUser :one
+SELECT * FROM users WHERE id = $1;
+
+-- name: CreateUser :one
+INSERT INTO users (email, name) VALUES ($1, $2) RETURNING *;
+```
+
+### Architecture Principles
+
+1. **依存関係の方向**: handler → service → db（上から下への依存）
+2. **internal パッケージ**: 外部からのインポート不可、カプセル化
+3. **コード生成**: OpenAPI、SQLc による自動生成で型安全性確保
+4. **エラーハンドリング**: 各層でラップし、適切なHTTPステータスコードに変換
+
+### Module Boundaries
+
+```
+cmd/server/main.go (エントリポイント)
+    └── internal/handler/ (HTTP層)
+        └── internal/service/ (ビジネスロジック層)
+            └── internal/db/ (データアクセス層)
+```
+
+### Code Size Guidelines
+
+- **Handler関数**: 30行以内を目安（バリデーション、サービス呼び出し、レスポンス）
+- **Service関数**: 50行以内を目安
+- **ファイル**: 300行以内を目安
+- **パッケージ**: 単一責務の原則に従う
