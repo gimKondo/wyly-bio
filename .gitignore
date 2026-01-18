@@ -1,6 +1,5 @@
 # IDEとエディタ設定
 *.code-workspace
-.vscode/
 
 # AI開発ツール設定
 .claude/settings.local.json
