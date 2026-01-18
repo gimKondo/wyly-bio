@@ -7,7 +7,8 @@
 | サービス | 役割 | 技術 | ポート |
 |---------|------|------|--------|
 | app-web | Webフロントエンド | Next.js 15 / TypeScript | 23000 |
-| app-backend | APIサーバー | Go 1.23 / Echo v4 | 8080 |
+| app-backend | APIサーバー | Go 1.23 / Echo v4 | 28080 |
+| PostgreSQL | データベース | PostgreSQL 16 | 25432 |
 
 ## ローカル開発環境のセットアップ
 
@@ -40,7 +41,7 @@ docker compose up -d
 docker compose logs -f
 
 # ヘルスチェック
-curl http://localhost:8080/health
+curl http://localhost:28080/health
 ```
 
 ### 3. フロントエンドの起動
