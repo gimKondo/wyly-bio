@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: wyly-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-wyly}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-wyly_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-wyly}
+    ports:
+      - "25432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./app-backend/internal/db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wyly} -d ${POSTGRES_DB:-wyly}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./app-backend
+      dockerfile: Dockerfile
+    container_name: wyly-backend
+    environment:
+      PORT: ${PORT:-8080}
+      DATABASE_URL: postgres://${POSTGRES_USER:-wyly}:${POSTGRES_PASSWORD:-wyly_dev_password}@postgres:5432/${POSTGRES_DB:-wyly}?sslmode=disable
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:23000}
+    ports:
+      - "28080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -4,6 +4,10 @@
 # AI開発ツール設定
 .claude/settings.local.json
 .serena/
+.spec-workflow/approvals/
+
+# 環境変数（ルートのdocker-compose用）
+.env
 
 # プロジェクトドキュメント（公開不要）
 .sow/
